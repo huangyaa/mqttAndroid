@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--<string name="app_name">EspTouch</string>-->
+    <!--<string name="ssid_title">SSID: </string>-->
+    <!--<string name="bssid_title">BSSID: </string>-->
+    <!--<string name="password_title">Password: </string>-->
+    <!--<string name="device_count_title">Device count: </string>-->
+    <!--<string name="confirm">Confirm</string>-->
+    <!--<string name="wifi_5g_message">Device dose not support 5G Wifi</string>-->
+    <string name="app_name">EspTouch</string>
+    <string name="ssid_title">SSID: </string>
+    <string name="bssid_title">BSSID: </string>
+    <string name="password_title">Password: </string>
+    <string name="device_count_title">设备数量：</string>
+    <string name="confirm">开始设置</string>
+    <string name="wifi_5g_message">设备不支持 5G wifi</string>
+    <string name="save">保存</string>
+    <string name="open">开</string>
+    <string name="close">关</string>
+</resources>
