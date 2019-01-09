@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="com.espressif.iot.esptouch.demo_activity.login.SetPassWordActivity">
+    <include layout="@layout/header_back"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <LinearLayout
+            android:id="@+id/email_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:background="@drawable/corner_view"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_height="40dp"
+                    android:text="输入密码:"
+                    android:textSize="18sp"
+                    />
+                <EditText
+                    android:id="@+id/passWord_one"
+                    android:layout_width="0dp"
+                    android:background="@color/write"
+                    android:layout_weight="0.4"
+                    android:layout_height="40dp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.25"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/red"
+                    android:text="8位有效长度"
+                    />
+            </LinearLayout>
+            <View android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/colorPrimary"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_height="40dp"
+                    android:text="再输入一次:"
+                    android:textSize="18sp"
+                    />
+                <EditText
+                    android:id="@+id/passWord_two"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.4"
+                    android:background="@color/write"
+                    android:layout_height="40dp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.25"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="40dp"
+                    />
+            </LinearLayout>
+            <View android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/colorPrimary"/>
+            <Button
+                android:id="@+id/set_passWord_button"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="完成"
+                android:textSize="18sp"
+                android:textColor="@color/little_green"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

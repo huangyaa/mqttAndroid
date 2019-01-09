@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_back"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="添加设备"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/first"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/corner_view"
+                android:orientation="vertical"
+                android:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/wifi"
+                    />
+                <TextView android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="只支持2.4GWIFI"
+                    android:textColor="@color/colorPrimary"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/ssid_title"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/ap_ssid_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </LinearLayout>
+                <View android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/colorPrimary"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/bssid_title"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/ap_bssid_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </LinearLayout>
+                <View android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/colorPrimary"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/password_title"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <EditText
+                        style="?android:attr/textViewStyle"
+                        android:id="@+id/ap_password_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@null"
+                        android:layout_marginLeft="10dp"
+                        android:singleLine="true" />
+                </LinearLayout>
+                <View android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/colorPrimary"/>
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/remember"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:src="@drawable/radio_blue"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center_vertical"
+                        android:textSize="14sp"
+                        android:text="记住wifi密码"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/second"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/corner_view"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/device"
+                        />
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/phone"
+                        />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+                        <com.ldoublem.loadingviewlib.view.LVCircularJump
+                            android:id="@+id/lv_circularJump"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:onClick="startAnim"/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/wifi"
+                        />
+                </LinearLayout>
+
+                <TextView android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="请保持手机和设备在同一个wifi下且尽量靠近路由器"
+                    android:textColor="@color/colorPrimary"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:text="正在尝试连接设备"/>
+                    <TextView
+                        android:id="@+id/configTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="(60s)"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="请稍后..."
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/corner_view"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="配对失败"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/red"/>
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/device"
+                        />
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/phone"
+                        />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+                        <ImageView android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/lost"/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/wifi"
+                        />
+                </LinearLayout>
+
+                <TextView android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:text="无法找到设备，请检查一下配置" />
+                <TextView android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="a.设备没在配对模式，请让设备进入配对模式"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="b.检查WIFI密码是否正确"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="20dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="c.请确保手机和设备尽量靠近WIFI路由器"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="20dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/confirm_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="下一步"
+                android:textColor="@android:color/holo_blue_dark" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

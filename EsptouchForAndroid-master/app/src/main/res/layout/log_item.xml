@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.espressif.iot.esptouch.demo_activity.ItemFragment"
+    tools:context="com.espressif.iot.esptouch.demo_activity.ItemFragment"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center" android:id="@+id/lvFraList_id">
+        <TextView
+            android:id="@+id/log_item_id"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            android:id="@+id/log_item_mobile"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            android:id="@+id/log_item_do"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            android:id="@+id/log_item_time"
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceListItem" />
+    </LinearLayout>
+</LinearLayout>

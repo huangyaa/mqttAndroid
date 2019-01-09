@@ -1,403 +1,307 @@
 package com.espressif.iot.esptouch.demo_activity;
 
+import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
-import android.os.Build;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AlertDialog;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.espressif.iot.esptouch.EsptouchTask;
-import com.espressif.iot.esptouch.IEsptouchListener;
-import com.espressif.iot.esptouch.IEsptouchResult;
-import com.espressif.iot.esptouch.IEsptouchTask;
+import com.ashokvarma.bottomnavigation.BadgeItem;
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.espressif.iot.esptouch.demo_activity.dummy.DummyContent;
+import com.espressif.iot.esptouch.demo_activity.dummy.MessageEvent;
+import com.espressif.iot.esptouch.demo_activity.login.LoginActivity;
 import com.espressif.iot.esptouch.demo_activity.mqtt_util.MqttManager;
-import com.espressif.iot.esptouch.task.__IEsptouchTask;
-import com.espressif.iot.esptouch.util.ByteUtil;
-import com.espressif.iot.esptouch.util.EspAES;
-import com.espressif.iot.esptouch.util.EspNetUtil;
 import com.espressif.iot_esptouch_demo.R;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.bean.ZxingConfig;
+import com.yzq.zxinglibrary.common.Constant;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.security.acl.Permission;
 import java.util.List;
 
-public class EsptouchDemoActivity extends AppCompatActivity implements OnClickListener {
-    private static final String TAG = "EsptouchDemoActivity";
+public class EsptouchDemoActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
+        private BottomNavigationBar mBottomNavigationBar;
+        private BlankFragment indexFragment;
+        private ItemFragment personFragment;
+        private BadgeItem badgeItem;
+        private Activity activity;
+        private Context context;
+        private TextView mobileView;
+        private TextView loginOutView;
+        private MqttManager mqttManager;
+        private int REQUEST_CODE_SCAN = 111;
 
-    private static final boolean AES_ENABLE = false;// AES对称加密
-    private static final String AES_SECRET_KEY = "1234567890123456"; // TODO modify your own key
-
-    private TextView mApSsidTV;
-    private TextView mApBssidTV;
-    private EditText mApPasswordET;
-    private EditText mDeviceCountET;
-    private Button mConfirmBtn;
-    private ListView listView;
-
-    private IEsptouchListener myListener = new IEsptouchListener() {
-
-        @Override
-        public void onEsptouchResultAdded(final IEsptouchResult result) {
-            onEsptoucResultAddedPerform(result);
-        }
-    };
-
-    private EsptouchAsyncTask4 mTask;
-
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action == null) {
-                return;
-            }
-
-            switch (action) {
-                case WifiManager.NETWORK_STATE_CHANGED_ACTION:
-                    WifiInfo wifiInfo = intent.getParcelableExtra(WifiManager.EXTRA_WIFI_INFO);
-                    onWifiChanged(wifiInfo);
-                    break;
-            }
-        }
-    };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.esptouch_demo_activity);
-        listView = (ListView)findViewById(R.id.listView);
-        mApSsidTV = findViewById(R.id.ap_ssid_text);
-        mApBssidTV = findViewById(R.id.ap_bssid_text);
-        mApPasswordET = findViewById(R.id.ap_password_edit);
-        mDeviceCountET = findViewById(R.id.device_count_edit);
-        mDeviceCountET.setText("1");
-        mConfirmBtn = findViewById(R.id.confirm_btn);
-        mConfirmBtn.setEnabled(false);
-        mConfirmBtn.setOnClickListener(this);
-
-        TextView versionTV = findViewById(R.id.version_tv);
-        versionTV.setText(IEsptouchTask.ESPTOUCH_VERSION);
-
-        IntentFilter filter = new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        registerReceiver(mReceiver, filter);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        unregisterReceiver(mReceiver);
-    }
-
-    private void onWifiChanged(WifiInfo info) {
-        if (info == null) {
-            mApSsidTV.setText("");
-            mApSsidTV.setTag(null);
-            mApBssidTV.setTag("");
-            mConfirmBtn.setEnabled(false);
-            mConfirmBtn.setTag(null);
-
-            if (mTask != null) {
-                mTask.cancelEsptouch();
-                mTask = null;
-                new AlertDialog.Builder(EsptouchDemoActivity.this)
-                        .setMessage("Wifi disconnected or changed")
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .show();
-            }
-        } else {
-            String ssid = info.getSSID();
-            if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
-                ssid = ssid.substring(1, ssid.length() - 1);
-            }
-            mApSsidTV.setText(ssid);
-            mApSsidTV.setTag(ByteUtil.getBytesByString(ssid));
-            byte[] ssidOriginalData = EspUtils.getOriginalSsidBytes(info);
-            mApSsidTV.setTag(ssidOriginalData);
-
-            String bssid = info.getBSSID();
-            mApBssidTV.setText(bssid);
-
-            mConfirmBtn.setEnabled(true);
-            mConfirmBtn.setTag(Boolean.FALSE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                int frequence = info.getFrequency();
-                if (frequence > 4900 && frequence < 5900) {
-                    // Connected 5G wifi. Device does not support 5G
-                    mConfirmBtn.setTag(Boolean.TRUE);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v == mConfirmBtn) {
-//            if ((Boolean) mConfirmBtn.getTag()) {
-//                Toast.makeText(this, R.string.wifi_5g_message, Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//
-//            byte[] ssid = mApSsidTV.getTag() == null ? ByteUtil.getBytesByString(mApSsidTV.getText().toString())
-//                    : (byte[]) mApSsidTV.getTag();
-//            byte[] password = ByteUtil.getBytesByString(mApPasswordET.getText().toString());
-//            byte [] bssid = EspNetUtil.parseBssid2bytes(mApBssidTV.getText().toString());
-//            byte[] deviceCount = mDeviceCountET.getText().toString().getBytes();
-//
-//            if(mTask != null) {
-//                mTask.cancelEsptouch();
-//            }
-//            mTask = new EsptouchAsyncTask4(this,listView);
-//            mTask.execute(ssid, bssid, password, deviceCount);
-            //跳转到编辑页面，修改备注信息
-            Intent intent = new Intent(EsptouchDemoActivity.this, DetailOperatorActicity.class);
-
-            /* 通过Bundle对象存储需要传递的数据 */
-            Bundle bundle = new Bundle();
-            bundle.putString("bssid", "84:F3:EB:84:35:A1");
-            bundle.putString("address", "192.168.0.102");
-            bundle.putString("mark", "设备1");
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
-    }
-
-    private void onEsptoucResultAddedPerform(final IEsptouchResult result) {
-        runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                String text = result.getBssid() + " is connected to the wifi";
-                Toast.makeText(EsptouchDemoActivity.this, text,
-                        Toast.LENGTH_LONG).show();
-            }
-
-        });
-    }
-
-    private  class EsptouchAsyncTask4 extends AsyncTask<byte[], Void, List<IEsptouchResult>> {
-        private WeakReference<EsptouchDemoActivity> mActivity;
-
-        // without the lock, if the user tap confirm and cancel quickly enough,
-        // the bug will arise. the reason is follows:
-        // 0. task is starting created, but not finished
-        // 1. the task is cancel for the task hasn't been created, it do nothing
-        // 2. task is created
-        // 3. Oops, the task should be cancelled, but it is running
-        private final Object mLock = new Object();
-        private ProgressDialog mProgressDialog;
-        private AlertDialog mResultDialog;
-        private IEsptouchTask mEsptouchTask;
-        private ListView listView;
-
-        EsptouchAsyncTask4(EsptouchDemoActivity activity,ListView listView) {
-            mActivity = new WeakReference<>(activity);
-            this.listView = listView;
-        }
-
-        void cancelEsptouch() {
-            cancel(true);
-            if (mProgressDialog != null) {
-                mProgressDialog.dismiss();
-            }
-            if (mResultDialog != null) {
-                mResultDialog.dismiss();
-            }
-            if (mEsptouchTask != null) {
-                mEsptouchTask.interrupt();
-            }
-        }
+        private static String mobile;
+        private FragmentManager fm ;
+        private FragmentTransaction transaction ;
+        private String tab = "0";
 
         @Override
-        protected void onPreExecute() {
-            Activity activity = mActivity.get();
-            mProgressDialog = new ProgressDialog(activity);
-            mProgressDialog.setMessage("Esptouch is configuring, please wait for a moment...");
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.setOnCancelListener(new OnCancelListener() {//点击返回键事件监听
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    synchronized (mLock) {
-                        if (__IEsptouchTask.DEBUG) {
-                            Log.i(TAG, "progress dialog back pressed canceled");
-                        }
-                        if (mEsptouchTask != null) {
-                            mEsptouchTask.interrupt();
-                        }
-                    }
-                }
-            });
-            mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, activity.getText(android.R.string.cancel),
-                    new DialogInterface.OnClickListener() {//添加取消按钮监听事件
+        protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                //获取mobile信息
+                Bundle bundle = this.getIntent().getExtras();
+                //保存成功跳转的参数
+                tab = bundle.getString("tab");
+                mobile = bundle.getString("mobile");
+
+                setContentView(R.layout.esptouch_demo_activity);
+                initBadge();
+                setDefaultFragment();
+                InitNavigationBar();
+                activity = EsptouchDemoActivity.this;
+                mobileView = (TextView)findViewById(R.id.login_in_mobile);
+                mobileView.setText(mobile);
+                loginOutView = (TextView)findViewById(R.id.login_out);
+                loginOutView.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            synchronized (mLock) {
-                                if (__IEsptouchTask.DEBUG) {
-                                    Log.i(TAG, "progress dialog cancel button canceled");
-                                }
-                                if (mEsptouchTask != null) {
-                                    mEsptouchTask.interrupt();
-                                }
-                            }
+                        public void onClick( View v ) {
+                                //退出到登录页面
+                                Intent intent = new Intent(activity, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
                         }
-                    });
-            mProgressDialog.show();
+                });
+                //初始化mqtt管理对象
+                mqttManager = MqttManager.getInstance(this);
+                mqttManager.connect();
+                context = this;
+
+                fm = getSupportFragmentManager();
+                transaction = fm.beginTransaction();
+                if("1".equals(tab)){
+                        if (indexFragment == null) {
+                                indexFragment = new BlankFragment(new MyBlankFragmentListen());
+                        }
+                        transaction.replace(R.id.fragment_container, indexFragment);
+                        transaction.commit();
+                }else if("2".equals(tab)){
+                        if (personFragment == null) {
+                                personFragment = new ItemFragment(new MyListFragmentListen(),EsptouchDemoActivity.this, this.mobile);
+                        }
+                        transaction.replace(R.id.fragment_container,personFragment);
+                        transaction.commit();
+                }
+//               //注册订阅者
+//                EventBus.getDefault().register(this);
+        }
+
+        private void InitNavigationBar() {
+                mBottomNavigationBar = (BottomNavigationBar)findViewById(R.id.bottom_navigation_bar);
+                mBottomNavigationBar.setTabSelectedListener(this);
+                mBottomNavigationBar.setMode(BottomNavigationBar.MODE_SHIFTING);
+                mBottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_RIPPLE);
+                mBottomNavigationBar
+                .addItem(new BottomNavigationItem(R.drawable.add1,"设置").
+                        setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.add)))//非选中的图)
+                .addItem(new BottomNavigationItem(R.drawable.myself1,"我的").
+                        setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.myself)))
+                .setFirstSelectedPosition(0)
+                .setActiveColor(R.color.listBg)
+                .setBarBackgroundColor(R.color.green)
+                .initialise();
+        }
+
+        //图标上的角码设置
+        public void initBadge() {
+                badgeItem = new BadgeItem()
+                .setBorderWidth(2)
+                .setBorderColor("#ff0000")
+                .setBackgroundColor("#ff0000")
+                .setGravity(Gravity.RIGHT| Gravity.TOP)
+                .setText("2")
+                .setTextColor("#ffffff")
+                .setAnimationDuration(2000)
+                .setHideOnSelect(true);
+        }
+        private void setDefaultFragment() {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                indexFragment = new BlankFragment(new MyBlankFragmentListen());
+                transaction.replace(R.id.fragment_container, indexFragment);
+                transaction.commit();
+        }
+
+
+        @Override
+        public void onTabSelected(int position) {
+                Log.d("onTabSelected", "onTabSelected: " + position);
+                fm = getSupportFragmentManager();
+                transaction = fm.beginTransaction();
+                switch (position) {
+                case 0:
+                        if (indexFragment == null) {
+                           indexFragment = new BlankFragment(new MyBlankFragmentListen());
+                        }
+                        transaction.replace(R.id.fragment_container, indexFragment);
+                        break;
+                case 1:
+                        if (personFragment == null) {
+                            personFragment = new ItemFragment(new MyListFragmentListen(),EsptouchDemoActivity.this, this.mobile);
+                        }
+                        transaction.replace(R.id.fragment_container,personFragment);
+                        break;
+                default:
+                        break;
+                }
+                // 事务提交
+                transaction.commit();
         }
 
         @Override
-        protected List<IEsptouchResult> doInBackground(byte[]... params) {
-            EsptouchDemoActivity activity = mActivity.get();
-            int taskResultCount;
-            synchronized (mLock) {
-                // !!!NOTICE
-                byte[] apSsid = params[0];
-                byte[] apBssid = params[1];
-                byte[] apPassword = params[2];
-                byte[] deviceCountData = params[3];
-                taskResultCount = deviceCountData.length == 0 ? -1 : Integer.parseInt(new String(deviceCountData));
-                Context context = activity.getApplicationContext();
-                if (AES_ENABLE) {
-                    byte[] secretKey = AES_SECRET_KEY.getBytes();
-                    EspAES aes = new EspAES(secretKey);
-                    mEsptouchTask = new EsptouchTask(apSsid, apBssid, apPassword, aes, context);
-                } else {
-                    mEsptouchTask = new EsptouchTask(apSsid, apBssid, apPassword, null, context);
-                }
-                mEsptouchTask.setEsptouchListener(activity.myListener);
-            }
-            return mEsptouchTask.executeForResults(taskResultCount);
+        public void onTabUnselected(int position) {
+             Log.d("onTabUnselected", "onTabUnselected: " + position);
         }
 
         @Override
-        protected void onPostExecute(List<IEsptouchResult> result) {
-            EsptouchDemoActivity activity = mActivity.get();
-            mProgressDialog.dismiss();
-            mResultDialog = new AlertDialog.Builder(activity)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .create();
-            mResultDialog.setCanceledOnTouchOutside(false);
-            if (result == null) {
-                mResultDialog.setMessage("Create Esptouch task failed, the esptouch port could be used by other thread");
-                mResultDialog.show();
-                return;
-            }
+        public void onTabReselected(int position) {
+             Log.d("onTabReselected", "onTabReselected: " + position);
+        }
 
-            IEsptouchResult firstResult = result.get(0);
-            // check whether the task is cancelled and no results received
-            if (!firstResult.isCancelled()) {
-                int count = 0;
-                // max results to be displayed, if it is more than maxDisplayCount,
-                // just show the count of redundant ones
-                final int maxDisplayCount = 10;
-                // the task received some results including cancelled while
-                // executing before receiving enough results
-                if (firstResult.isSuc()) {
-                    StringBuilder sb = new StringBuilder();
-                    List<HashMap<String, Object>> data = new ArrayList<HashMap<String,Object>>();
-                    for (IEsptouchResult resultInList : result) {//需要处理mac地址，获得的mac地址没有：
-//                        sb.append("Esptouch success, bssid = ")
-////                                .append(resultInList.getBssid())
-////                                .append(", InetAddress = ")
-////                                .append(resultInList.getInetAddress().getHostAddress())
-////                                .append("\n");
-                        String bssid = resultInList.getBssid();
-                        StringBuffer mac = new StringBuffer();
-                        int begin = 0;
-                        if(!bssid.contains(":")){
-                            while (begin < bssid.length()){
-                                mac = mac.append(bssid.substring(begin,begin+2));
-                                if(begin != bssid.length() - 2){
-                                    mac.append(":");
-                                }
-                                begin = begin + 2;
-                            }
+        //实现listFrament的回调监听
+        public class MyListFragmentListen implements ItemFragment.OnListFragmentInteractionListener{
+                @Override
+                public void onListFragmentInteraction(DummyContent.DummyItem item){
+                        if("ON".equals(item.getStatus())){
+                                //在线可以跳转
+                                Intent intent = new Intent(activity, DeviceDetailActivity.class);
+                                // 通过Bundle对象存储需要传递的数据
+                                Bundle bundle = new Bundle();
+                                bundle.putString("mac",item.getMac());
+                                bundle.putString("switchNum",item.getContent().substring(0,1));
+                                bundle.putString("mark", item.getDetails());
+                                bundle.putString("deviceType", item.getDeviceType());
+                                bundle.putString("mobile", mobile);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
                         }
-                        //获取到集合数据
-                        HashMap<String, Object> item = new HashMap<String, Object>();
-                        item.put("id", count);
-                        item.put("bssid", bssid);
-                        item.put("address", resultInList.getInetAddress().getHostAddress());
-
-                        SharedPreferences sp = getSharedPreferences("devConfig", Context.MODE_PRIVATE);
-                        String name = sp.getString(resultInList.getBssid(), null);
-                        if(name != null){
-                            item.put("mark", name);
-                        }else{
-                            item.put("mark", "设备"+count);
-                        }
-                        data.add(item);
-
-                        count++;
-                        if (count >= maxDisplayCount) {
-                            break;
-                        }
-                    }
-                    //创建SimpleAdapter适配器将数据绑定到item显示控件上
-                    SimpleAdapter adapter = new SimpleAdapter(getApplicationContext(), data, R.layout.item,
-                            new String[]{"bssid", "address", "mark"}, new int[]{R.id.bssid, R.id.address, R.id.mark});
-                    //实现列表的显示
-                    listView.setAdapter(adapter);
-                    //条目点击事件
-                    listView.setOnItemClickListener(new ItemClickListener());
-                    if (count < result.size()) {
-                        sb.append("\nthere's ")
-                                .append(result.size() - count)
-                                .append(" more result(s) without showing\n");//显示多余未显示的设备数
-                        mResultDialog.setMessage(sb.toString());//配网成功
-                    }
-                } else {
-                    mResultDialog.setMessage("Esptouch fail");//成功但没有返回值
                 }
-
-                mResultDialog.show();
-            }
-
-            activity.mTask = null;
         }
-    }
 
-    //获取条目点击事件
-    private final  class ItemClickListener implements AdapterView.OnItemClickListener {
+        //实现BlankFrament的回调监听
+        public class MyBlankFragmentListen implements BlankFragment.OnFragmentInteractionListener{
+                @Override
+                public void onFragmentInteraction(int checkId){
+                         if(R.id.wifi == checkId){
+                                 //在线可以跳转
+                                 Intent intent = new Intent(activity, AddDeviceActivity.class);
+                                 Bundle bundle = new Bundle();
+                                 bundle.putString("mobile",mobile);
+                                 intent.putExtras(bundle);
+                                 startActivity(intent);
+                         }else{
+                                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                                     // 申请权限
+                                     ActivityCompat.requestPermissions(EsptouchDemoActivity.this, new String[]{Manifest.permission.CAMERA}, Constant.REQUEST_CODE_SCAN);
+                                     return;
+                                 }else{
+                                     // 获得授权
+                                     ZxingConfig config = new ZxingConfig();
+                                     config.setPlayBeep(true);//是否播放扫描声音 默认为true
+                                     config.setShake(true);//是否震动  默认为true
+                                     config.setDecodeBarCode(true);//是否扫描条形码 默认为true
+                                     config.setReactColor(R.color.colorAccent);//设置扫描框四个角的颜色 默认为白色
+                                     config.setFrameLineColor(R.color.colorAccent);//设置扫描框边框颜色 默认无色
+                                     config.setScanLineColor(R.color.colorAccent);//设置扫描线的颜色 默认白色
+                                     config.setFullScreenScan(false);//是否全屏扫描  默认为true  设为false则只会在扫描框中扫描
+                                     Intent intent = new Intent(EsptouchDemoActivity.this, CaptureActivity.class);
+                                     intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+                                     startActivityForResult(intent, REQUEST_CODE_SCAN);
+                                 }
+                         }
 
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ListView listView = (ListView) parent;
-            HashMap<String, Object> data = (HashMap<String, Object>) listView.getItemAtPosition(position);
-            String deviceId = data.get("id").toString();
-            Toast.makeText(getApplicationContext(), deviceId, Toast.LENGTH_LONG).show();
-            //跳转到编辑页面，修改备注信息
-            Intent intent = new Intent(EsptouchDemoActivity.this, DetailOperatorActicity.class);
-
-            /* 通过Bundle对象存储需要传递的数据 */
-            Bundle bundle = new Bundle();
-            bundle.putString("bssid", data.get("bssid").toString());
-            bundle.putString("address", data.get("address").toString());
-            bundle.putString("mark", data.get("mark").toString());
-            intent.putExtras(bundle);
-            startActivity(intent);
+                }
         }
-    }
+//        //定义处理接收的方法 EventBus
+//        @Subscribe(threadMode = ThreadMode.MAIN)
+//        public void messageEventBus(MessageEvent messageEvent){
+//                if("save".equals(messageEvent.getMessage())){
+//                        //列表新增，更新列表数据
+//                        if (personFragment == null) {
+//                                personFragment = new ItemFragment(new MyListFragmentListen(),this);
+//                        }else{
+//                                DummyContent.DummyItem dummyItem = new DummyContent.DummyItem("",
+//                                           messageEvent.getType()+"路型开关",messageEvent.getName(),messageEvent.getMac());
+//                                dummyItem.setStatus("OFF");
+//                                personFragment.interItem(dummyItem);
+//                        }
+//                }
+//        }
 
+        @Override
+        protected void onDestroy() {
+                super.onDestroy();
+                //注销注册
+             //   EventBus.getDefault().unregister(this);
+                mqttManager.close();
+                mqttManager = null;
+        }
+
+        @Override
+        public void onRequestPermissionsResult( int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                switch (requestCode) {
+                        case Constant.REQUEST_CODE_SCAN:
+                                // 摄像头权限申请
+                                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                                        // 获得授权
+                                        ZxingConfig config = new ZxingConfig();
+                                        config.setPlayBeep(true);//是否播放扫描声音 默认为true
+                                        config.setShake(true);//是否震动  默认为true
+                                        config.setDecodeBarCode(true);//是否扫描条形码 默认为true
+                                        config.setReactColor(R.color.colorAccent);//设置扫描框四个角的颜色 默认为白色
+                                        config.setFrameLineColor(R.color.colorAccent);//设置扫描框边框颜色 默认无色
+                                        config.setScanLineColor(R.color.colorAccent);//设置扫描线的颜色 默认白色
+                                        config.setFullScreenScan(false);//是否全屏扫描  默认为true  设为false则只会在扫描框中扫描
+                                        Intent intent = new Intent(EsptouchDemoActivity.this, CaptureActivity.class);
+                                        intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+                                        startActivityForResult(intent, REQUEST_CODE_SCAN);
+                                } else {
+                                        // 被禁止授权
+                                        Toast.makeText(EsptouchDemoActivity.this, "请至权限中心打开本应用的相机访问权限", Toast.LENGTH_LONG).show();
+                                }
+                                break;
+                }
+        }
+
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+                super.onActivityResult(requestCode, resultCode, data);
+
+                // 扫描二维码/条码回传
+                if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+                        if (data != null) {
+
+                                String content = data.getStringExtra(Constant.CODED_CONTENT);
+                                Intent intent = new Intent(activity, DetailOperatorActicity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("bssid",content);
+                                bundle.putString("mark","新设备"+content);
+                                bundle.putString("type","2");
+                                bundle.putString("mobile",mobile);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                        }
+                }
+        }
 }

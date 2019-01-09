@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:gravity="center_vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="智能控制设备"
+        android:textSize="18sp"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/write">
+    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/corner_view">
+            <TextView
+                android:id="@+id/login_in_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="15067060941"
+                android:textSize="15sp"
+                android:textColor="@color/blue">
+            </TextView>
+            <TextView
+                android:id="@+id/login_out"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:text="退出"
+                android:textColor="@color/red">
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

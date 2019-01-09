@@ -1,11 +1,35 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    ext {
+        /*sdk and version*/
+        compile_sdk_version = 27
+        build_tools_version = '27.1.1'
+        min_sdk_version = 14
+        target_sdk_version = 27
+        constraint_version = '1.1.0'
+        version_code = 220
+        version_name = '2.2.0'
+
+        /*support*/
+        android_support = '27.1.1'
+
+
+//        signConfigs = [
+//                storeFilePath: "zxing.jks",
+//                storePwd     : "123456",
+//                keyAlias     : "zxingyzq",
+//                keypwd       : "123456"
+//        ]
+
+    }
+
     repositories {
         jcenter()
         google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
     }
 }
 
@@ -13,5 +37,6 @@ allprojects {
     repositories {
         jcenter()
         google()
+        maven { url "https://jitpack.io" }
     }
 }

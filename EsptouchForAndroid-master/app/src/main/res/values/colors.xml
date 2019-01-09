@@ -2,5 +2,15 @@
 <resources>
     <color name="colorPrimary">#9E9E9E</color>
     <color name="colorPrimaryDark">#616161</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#87CEFA</color>
+    <color name="blue">#87CEFA</color>
+    <color name="write">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="colordialog">#70000000</color>
+    <color name="listBg">#E0E0E0</color>
+    <color name="red">#e62e77</color>
+    <color name="yellow">#FFEC8B</color>
+    <color name="header">#B0E2FF</color>
+    <color name="green">#3f48cc</color>
+    <color name="little_green">#1390ee</color>
 </resources>

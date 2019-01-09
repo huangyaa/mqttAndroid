@@ -2,22 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:background="@color/colorAccent"
     android:layout_height="match_parent">
     <!--item -->
+    <!-- InetAddress -->
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:id="@+id/id"
+        />
     <!-- bssid -->
     <TextView
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:id="@+id/bssid"
-        />
-    <!-- InetAddress -->
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:id="@+id/address"
         />
     <!-- 备注 -->
     <TextView
@@ -26,5 +25,4 @@
         android:gravity="center_horizontal"
         android:id="@+id/mark"
         />
-
 </LinearLayout>

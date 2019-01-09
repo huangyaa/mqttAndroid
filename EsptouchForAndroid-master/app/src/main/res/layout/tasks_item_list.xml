@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginTop="10dp"
+    android:clickable="true" android:id="@+id/sw_id">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:id="@+id/task_name"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:id="@+id/task_time"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:id="@+id/task_type"
+            />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="50dp"
+            android:gravity="center_horizontal"
+            android:id="@+id/task_status"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/taskItemDel"
+        android:text="删除"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:background="@color/red"
+        android:gravity="center"/>
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

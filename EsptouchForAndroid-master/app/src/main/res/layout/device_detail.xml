@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:fillViewport="true">
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/device_detil_out">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <include layout="@layout/header_back_more"/>
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="TextView"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerId"
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/corner_view"
+                        android:layout_marginBottom="20dp"
+                        android:layout_gravity="center_horizontal">
+                    </android.support.v7.widget.RecyclerView>
+                    <LinearLayout
+                        android:id="@+id/all_opr"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <!-- ListView控件 -->
+                        <TextView
+                            android:id="@+id/all_open"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.4"
+                            android:layout_height="50dp"
+                            android:gravity="center"
+                            android:layout_margin="10dp"
+                            android:text="全开"
+                            android:background="@drawable/conner_view_blue"
+                            android:textSize="16sp">
+                        </TextView>
+                        <TextView
+                            android:id="@+id/all_close"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.4"
+                            android:layout_margin="10dp"
+                            android:layout_height="50dp"
+                            android:gravity="center"
+                            android:text="全关"
+                            android:textColor="@color/red"
+                            android:background="@drawable/conner_view_dark"
+                            android:textSize="16sp">
+                        </TextView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/imageAdd"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/yellow"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <!-- ListView控件 -->
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_playlist_add_black_24dp">
+                        </ImageView>
+                        <TextView android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:gravity="center"
+                            android:text="新增定时任务"
+                            android:textSize="16sp">
+                        </TextView>
+
+                        <ImageView
+                            android:id="@+id/auth_refresh"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="50dp"
+                            android:gravity="center"
+                            android:src="@drawable/refresh"
+                            android:visibility="gone">
+                        </ImageView>
+                    </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycleTimer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/corner_view"
+                        android:layout_marginBottom="50dp">
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/opr_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:gravity="right">
+                    <LinearLayout
+                        android:layout_width="120dp"
+                        android:layout_height="160dp"
+                        android:gravity="center"
+                        android:layout_marginTop="60dp"
+                        android:background="@drawable/dialog"
+                        android:alpha="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/auto_close"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="开关配置"
+                            android:textSize="16sp">
+                        </TextView>
+                        <View android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/colorPrimaryDark"
+                            android:layout_marginRight="10dp">
+                        </View>
+                        <LinearLayout
+                            android:id="@+id/check_stream"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="流量信息"
+                                android:textSize="16sp">
+                            </TextView>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorPrimaryDark"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp">
+                            </View>
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/share_device"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="分享设备"
+                            android:textSize="16sp">
+                        </TextView>
+                        <View android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/colorPrimaryDark"
+                            android:layout_marginRight="10dp">
+                        </View>
+                        <TextView
+                            android:id="@+id/opr_log"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="操作记录"
+                            android:textSize="16sp">
+                        </TextView>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/set_open_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:background="@color/colordialog"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="300dp"
+                        android:layout_height="200dp"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="150dp"
+                        android:background="@drawable/dialog">
+                        <TextView
+                            android:id="@+id/dialog_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:text="设置名称"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="20dp">
+                            <TextView
+                                android:id="@+id/sub_name"
+                                android:layout_width="80dp"
+                                android:layout_height="45dp"
+                                android:layout_marginLeft="5dp"
+                                android:gravity="center_horizontal"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="名称" />
+
+                            <EditText
+                                android:id="@+id/sub_name_edit"
+                                android:layout_width="100dp"
+                                android:layout_height="48dp"
+                                android:layout_marginLeft="5dp"
+                                android:singleLine="true" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="15dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <Button
+                                android:id="@+id/confirm_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="确定"
+                                android:textColor="@color/little_green" />
+
+                            <Button
+                                android:id="@+id/cancel_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="取消"
+                                android:textColor="@android:color/holo_red_dark" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/set_stream"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:background="@color/colordialog"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="150dp"
+                        android:background="@drawable/dialog">
+                        <TextView
+                            android:id="@+id/stream_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:text="gprs设备信息查询"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="20dp">
+                            <TextView
+                                android:id="@+id/carrier"
+                                android:layout_width="100dp"
+                                android:layout_height="45dp"
+                                android:layout_marginLeft="5dp"
+                                android:gravity="center_horizontal"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="运营商" />
+
+                            <TextView
+                                android:id="@+id/carrier_view"
+                                android:layout_width="100dp"
+                                android:layout_height="48dp"
+                                android:layout_marginLeft="5dp"
+                                android:singleLine="true" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="20dp">
+                            <TextView
+                                android:id="@+id/card_status"
+                                android:layout_width="100dp"
+                                android:layout_height="45dp"
+                                android:layout_marginLeft="5dp"
+                                android:gravity="center_horizontal"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="卡状态" />
+
+                            <TextView
+                                android:id="@+id/status_view"
+                                android:layout_width="100dp"
+                                android:layout_height="48dp"
+                                android:layout_marginLeft="5dp"
+                                android:singleLine="true" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="20dp">
+                            <TextView
+                                android:id="@+id/active_date"
+                                android:layout_width="100dp"
+                                android:layout_height="45dp"
+                                android:layout_marginLeft="5dp"
+                                android:gravity="center_horizontal"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="卡激活日期" />
+
+                            <TextView
+                                android:id="@+id/active_date_view"
+                                android:layout_width="100dp"
+                                android:layout_height="48dp"
+                                android:layout_marginLeft="5dp"
+                                android:singleLine="true" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="20dp">
+                            <TextView
+                                android:id="@+id/user_count"
+                                android:layout_width="100dp"
+                                android:layout_height="45dp"
+                                android:layout_marginLeft="5dp"
+                                android:gravity="center_horizontal"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="当月用量" />
+
+                            <TextView
+                                android:id="@+id/used_count_view"
+                                android:layout_width="100dp"
+                                android:layout_height="48dp"
+                                android:layout_marginLeft="5dp"
+                                android:singleLine="true" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/share_device_dialog"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:background="@color/colordialog"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="150dp"
+                        android:background="@drawable/dialog">
+                        <TextView
+                            android:id="@+id/share_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:text="设备分享"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="45dp"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="对方手机号 （需要在平台注册过）" />
+
+                            <EditText
+                                android:id="@+id/share_mobile"
+                                android:layout_width="200dp"
+                                android:layout_height="48dp"
+                                android:singleLine="true" />
+                        </LinearLayout>
+                        <TableLayout
+                                android:id="@+id/tab"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="20dp"
+                                android:layout_height="match_parent">
+                            <TableRow>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="18dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:text="定时器权限："/>
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:layout_marginBottom="20dp"
+                                    android:layout_gravity="clip_horizontal">
+                                    <CheckBox
+                                        android:id="@+id/box_add"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="   新增"
+                                        style="@style/CustomCheckBoxTheme"
+                                        android:checked="true"/>
+                                    <CheckBox
+                                        android:id="@+id/box_del"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="15dp"
+                                        style="@style/CustomCheckBoxTheme"
+                                        android:checked="true"
+                                        android:text="   删除" />
+                                    <CheckBox
+                                        android:id="@+id/box_update"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="15dp"
+                                        style="@style/CustomCheckBoxTheme"
+                                        android:checked="true"
+                                        android:text="   启用/暂停" />
+                                </LinearLayout>
+                            </TableRow>
+                        </TableLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginBottom="10dp">
+                            <Button
+                                android:id="@+id/share_confirm"
+                                android:layout_height="wrap_content"
+                                android:layout_width="200dp"
+                                android:text="确定"
+                                android:textSize="18sp"
+                                android:background="@drawable/conner_view_blue">
+                            </Button>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/progress_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+                    <ProgressBar
+                        android:id="@+id/progress"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerInParent="true"
+                        />
+                </RelativeLayout>
+            </FrameLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>
