@@ -211,25 +211,26 @@ public class GetSmsActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                String path = "/sms/validateSmsCode";
-                String res = NetWorkUtils.postData(path, validateReqDto);
-                //解析Json串
-                Gson gson = new Gson();
-                java.lang.reflect.Type type = new TypeToken<ResultInfo>() {
-                }.getType();
-                ResultInfo resultInfo = gson.fromJson(res, type);
-                res = (String) resultInfo.getData();
-                if ("true".equals(res)) {
-                    res = "短信验证码验证成功";
-                    handler.post(getValidateSuccess);
-                } else {
-                    res = "短信验证码不正确";
-                }
-                Looper.prepare();
-                Toast toast = Toast.makeText(getApplicationContext(), res, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                Looper.loop();
+//                String path = "/sms/validateSmsCode";
+//                String res = NetWorkUtils.postData(path, validateReqDto);
+//                //解析Json串
+//                Gson gson = new Gson();
+//                java.lang.reflect.Type type = new TypeToken<ResultInfo>() {
+//                }.getType();
+//                ResultInfo resultInfo = gson.fromJson(res, type);
+//                res = (String) resultInfo.getData();
+//                if ("true".equals(res)) {
+//                    res = "短信验证码验证成功";
+//                    handler.post(getValidateSuccess);
+//                } else {
+//                    res = "短信验证码不正确";
+//                }
+                handler.post(getValidateSuccess);
+//                Looper.prepare();
+//                Toast toast = Toast.makeText(getApplicationContext(), res, Toast.LENGTH_SHORT);
+//                toast.setGravity(Gravity.CENTER, 0, 0);
+//                toast.show();
+//                Looper.loop();
             } catch (Exception e) {
                 e.printStackTrace();
                 Looper.prepare();

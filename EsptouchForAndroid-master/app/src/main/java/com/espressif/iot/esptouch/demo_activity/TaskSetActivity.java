@@ -114,12 +114,12 @@ public class TaskSetActivity extends AppCompatActivity {
             @Override
             public void onItemSelected( AdapterView<?> parent, View view, int position, long id ) {
                 String typePaste = (String) remaindTypeView.getItemAtPosition(position);//从spinner中获取被选择的数据
-                type = position+"";
-                if (type.equals("1")) {
-                    //1 为永久
+                type = position+1+"";
+                if (type.equals("2")) {
+                    //2 永久有效
                     dateView.setVisibility(View.GONE);
                 } else {
-                    //0 为一次
+                    //1 一次有效
                     dateView.setVisibility(View.VISIBLE);
                 }
             }
@@ -196,7 +196,7 @@ public class TaskSetActivity extends AppCompatActivity {
                     toast.show();
                     return;
                 }
-                if(date == null && type.equals("0")){
+                if(date == null && type.equals("1")){
 //                    Toast toast = Toast.makeText(TaskSetActivity.this, "请选择有效日期", Toast.LENGTH_SHORT);
 //                    toast.setGravity(Gravity.CENTER, 0, 0);
 //                    toast.show();
@@ -206,20 +206,25 @@ public class TaskSetActivity extends AppCompatActivity {
                             "yyyy-MM-dd");
                     date = format.format(curDate);
                 }
-                if(type.equals("0")){
+                if(type.equals("1")){
                     taskClassEntity.setExcuDate(date +" "+time);
                 }else{
                     taskClassEntity.setExcuTime(time);
                 }
 
                 taskClassEntity.setSwitchName(name);
+                taskClassEntity.setSwitchSeq(switchPos);
                 taskClassEntity.setMobile(mobile);
 //                String params = "deviceCode="+deviceCode+"&switchPos="+switchPos+"&name="+name
 //                                + "&type="+type + "&date="+date+" "+time;
 //                Toast.makeText(TaskSetActivity.this, params, Toast.LENGTH_SHORT).show();
 
                 ab.setTitle("定时器设置");  //设置标题
-                ab.setMessage("设置的时间：" + date + " "+ time);//设置消息内容
+                if(type.equals("1")){
+                    ab.setMessage("设置的时间：" + date + " "+ time);//设置消息内容
+                }else {
+                    ab.setMessage("设置的时间：" + time);//设置消息内容
+                }
                 ab.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick( DialogInterface dialog, int which ) {

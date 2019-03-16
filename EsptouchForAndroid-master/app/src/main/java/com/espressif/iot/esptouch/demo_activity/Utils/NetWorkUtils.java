@@ -75,7 +75,7 @@ public class NetWorkUtils {
      * @throws Exception
      */
     public static String getData( String path) throws Exception {
-        String result = "'";
+        String result = "";
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder().url(Const.baseUrl+path).build();

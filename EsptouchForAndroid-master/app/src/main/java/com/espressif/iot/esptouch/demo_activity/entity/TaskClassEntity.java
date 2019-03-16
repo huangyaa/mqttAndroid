@@ -10,6 +10,15 @@ public class TaskClassEntity {
     private String excuDate;
     private String status;
     private String mobile;
+    private Integer switchSeq;
+
+    public Integer getSwitchSeq() {
+        return switchSeq;
+    }
+
+    public void setSwitchSeq( Integer switchSeq ) {
+        this.switchSeq = switchSeq;
+    }
 
     public Integer getId() {
         return id;

@@ -42,6 +42,13 @@ import com.espressif.iot.esptouch.demo_activity.mqtt_util.MqttManager;
 import com.espressif.iot_esptouch_demo.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,6 +100,7 @@ public class DeviceDetailActivity extends AppCompatActivity {
     private int switchPosition;
     private String switchCurStatus;
 
+    private SmartRefreshLayout smartRefreshLayout;
     //private static Map<String,Integer> devices = new HashMap<>();
     private String deviceCode;
     private String mobile;
@@ -195,6 +203,32 @@ public class DeviceDetailActivity extends AppCompatActivity {
         getSwitchThread.start();
         progress.setVisibility(View.VISIBLE);
 
+        //下拉刷新功能
+        smartRefreshLayout = findViewById(R.id.device_detil_out);
+        smartRefreshLayout.setRefreshHeader(new ClassicsHeader(this));
+
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh( RefreshLayout refreshlayout ) {
+                mqttManager.setContext(context);
+                if (!mqttManager.isConnect()) {
+                    if (NetWorkUtils.isNetSystemUsable(context)) {
+                        mqttManager.connect();
+                    } else {
+                        Toast toast = Toast.makeText(context, "当前网络不可用", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
+                } else {
+                    //更新开关状态信息
+                    for(SwitchEntity switchEntity : items){
+                        switchEntity.setSwitchStatus("UN_KNOW");
+                    }
+                    // 获取完开关信息后再发送请求
+                    mqttManager.publish(deviceCode + "/user", "s", true, 0);
+                }
+            }
+        });
         //开关列表
         sp = context.getSharedPreferences("AutoSwitchConfig", MODE_PRIVATE);
         switchAdapt = new SwitchAdapt(items, this);
@@ -748,6 +782,7 @@ public class DeviceDetailActivity extends AppCompatActivity {
                     if (!isRepeat) {
                         switchAdapt.setmValues(items);
                         switchAdapt.notifyDataSetChanged();
+                        smartRefreshLayout.finishRefresh(true);
                     }
                 }
             }

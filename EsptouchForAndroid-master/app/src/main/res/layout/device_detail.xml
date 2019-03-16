@@ -9,10 +9,16 @@
         android:layout_height="match_parent"
         android:background="@drawable/background"
         android:fillViewport="true">
-        <LinearLayout android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/device_detil_out">
+        <!--<LinearLayout android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:id="@+id/device_detil_out">-->
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/device_detil_out"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="15dp">
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -488,7 +494,9 @@
                         />
                 </RelativeLayout>
             </FrameLayout>
-        </LinearLayout>
+         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        <!--</LinearLayout>-->
+
 
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

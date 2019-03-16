@@ -23,62 +23,60 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.35"
                     android:layout_height="40dp"
                     android:text="输入密码:"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     />
                 <EditText
                     android:id="@+id/passWord_one"
                     android:layout_width="0dp"
                     android:background="@color/write"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.35"
                     android:layout_height="40dp" />
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="0.25"
+                    android:layout_weight="0.30"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
                     android:textColor="@color/red"
+                    android:textSize="14sp"
                     android:text="8位有效长度"
                     />
             </LinearLayout>
             <View android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="10dp"
                 android:background="@color/colorPrimary"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.35"
                     android:layout_height="40dp"
                     android:text="再输入一次:"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     />
                 <EditText
                     android:id="@+id/passWord_two"
                     android:layout_width="0dp"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.35"
                     android:background="@color/write"
                     android:layout_height="40dp" />
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="0.25"
+                    android:layout_weight="0.30"
                     android:layout_marginLeft="10dp"
                     android:layout_height="40dp"
                     />
             </LinearLayout>
             <View android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="10dp"
                 android:background="@color/colorPrimary"/>
             <Button
                 android:id="@+id/set_passWord_button"

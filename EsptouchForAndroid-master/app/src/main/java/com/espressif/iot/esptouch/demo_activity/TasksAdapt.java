@@ -33,11 +33,11 @@ public class TasksAdapt extends RecyclerView.Adapter<TasksAdapt.ViewHolder> {
     @Override
     public void onBindViewHolder( @NonNull final TasksAdapt.ViewHolder holder, final int position ) {
         holder.taskNameView.setText(taskClasses.get(position).getSwitchName());
-        if (taskClasses.get(position).getType().equals("0")) {
-            holder.taskTypeView.setText("当天有效");
+        if (taskClasses.get(position).getCommand().indexOf("p") >=0 ) {
+            holder.taskTypeView.setText("上电");
             holder.taskTimeView.setText(taskClasses.get(position).getExcuDate());
         } else {
-            holder.taskTypeView.setText("永久有效");
+            holder.taskTypeView.setText("断电");
             holder.taskTimeView.setText(taskClasses.get(position).getExcuTime());
         }
         if (taskClasses.get(position).getStatus().equals("0")) {

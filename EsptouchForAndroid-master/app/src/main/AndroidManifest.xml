@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -42,8 +42,9 @@
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
         <service
-            android:name="com.espressif.iot.esptouch.demo_activity.down.UpdateService" android:exported="false"
-            />
+            android:name="com.espressif.iot.esptouch.demo_activity.down.UpdateService"
+            android:exported="false" />
+
         <activity
             android:name="com.espressif.iot.esptouch.demo_activity.TaskSetActivity"
             android:theme="@style/Theme.Picker" />
@@ -60,7 +61,7 @@
         <activity android:name="com.espressif.iot.esptouch.demo_activity.login.GetSmsActivity" />
         <activity android:name="com.espressif.iot.esptouch.demo_activity.login.SetPassWordActivity" />
         <activity android:name="com.espressif.iot.esptouch.demo_activity.OperateLogActivity" />
-        <activity android:name="com.espressif.iot.esptouch.demo_activity.SwitchAutoCloseSetActivity"></activity>
+        <activity android:name="com.espressif.iot.esptouch.demo_activity.SwitchAutoCloseSetActivity" />
     </application>
 
 </manifest>
